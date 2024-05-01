@@ -1,0 +1,34 @@
+:host {
+  display: block;
+  height: 100%;
+  background-color: #8ccf97;
+  padding: 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__label {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px solid gray;
+  }
+
+  &__button {
+    background-color: #00b11d;
+    border-radius: 8px;
+    border: 0;
+    padding-block: 8px;
+    cursor: pointer;
+    display: flex;
+    place-content: center;
+  }
+}
