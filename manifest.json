@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "PontadorMais",
+  "version": "1.0",
+  "description": "Uma extensão para ajudar no dia a dia",
+  "action": {
+    "default_title": "PontadorMais",
+    "default_popup": "index.html"
+  }
+}
