@@ -1,10 +1,16 @@
+<div class="logo">
+  <h1>PontadorMais</h1>
+  <img src="assets/login-icon.webp" height="144" width="144" />
+</div>
+
 @if(error) {
-<div>
+<div class="error">
   <p>{{ error }}</p>
+  <button class="error__button" (click)="onErrorClick()">X</button>
 </div>
 }
 
-<form class="form" (ngSubmit)="onSubmit()" ngNativeValidate>
+<form class="form" [formGroup]="credentials" (ngSubmit)="onSubmit()">
   <div>
     <label for="email" class="form__label">Email</label>
     <input
@@ -12,10 +18,8 @@
       class="form__input"
       type="email"
       placeholder="Digite seu email"
-      autofocus
-      required
       name="email"
-      [(ngModel)]="credentials.email"
+      formControlName="email"
     />
   </div>
   <div>
@@ -25,11 +29,17 @@
       type="password"
       class="form__input"
       placeholder="Digite sua senha"
-      required
       name="password"
-      [(ngModel)]="credentials.password"
+      formControlName="password"
+      required
     />
   </div>
+  @if(isSubmitted) { @if(password?.errors?.['required'] &&
+  email?.errors?.['required']) {
+  <small>Por favor digite seu e-mail e senha</small>
+  } @if(email?.errors?.['email']) {
+  <small>Email inválido</small>
+  } }
   <button class="form__button">
     @if(!isLoading) { Acessar } @else {
     <app-spinner diameter="16" strokeWidth="2" />

@@ -1,18 +1,42 @@
 :host {
   display: block;
   height: 100%;
-  background-color: #8ccf97;
+  background-color: #f1f9ec;
   padding: 16px;
+}
+
+.logo {
+  text-align: center;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+  padding: 8px;
+  color: #f1f9ec;
+  background-color: #ca3325;
+  border: 1px solid #ca3325;
+  border-radius: 8px;
+  margin-block: 8px;
+
+  &__button {
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    border: 0;
+  }
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 
   &__label {
     display: block;
-    margin-bottom: 6px;
   }
 
   &__input {
@@ -30,5 +54,10 @@
     cursor: pointer;
     display: flex;
     place-content: center;
+    color: #f1f9ec;
   }
+}
+
+small {
+  color: red;
 }
