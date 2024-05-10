@@ -12,6 +12,9 @@ import { EMPTY, catchError } from 'rxjs';
 
 import LoginService from './login.service';
 import SpinnerComponent from '../../shared/spinner.component';
+import AuthService from '../../core/services/auth.service';
+import LocalStorageService from '../../core/services/local-storage.service';
+import SignInResponse from '../../core/models/sign-in.model';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +28,8 @@ export default class LoginComponent {
   private credentialsService = inject(LoginService);
   private router = inject(Router);
   private nfb = inject(NonNullableFormBuilder);
+  private authService = inject(AuthService);
+  private localStorageService = inject(LocalStorageService);
 
   isSubmitted = false;
   isLoading = false;
@@ -68,7 +73,15 @@ export default class LoginComponent {
           return EMPTY;
         })
       )
-      .subscribe(() => {
+      .subscribe(({ client_id, token }: SignInResponse) => {
+        const auth = {
+          clientId: client_id,
+          token,
+          uid: email,
+        };
+        this.authService.set(auth);
+        this.localStorageService.setItem('session', auth);
+
         this.router.navigate(['board']);
       });
   }

@@ -1,7 +1,11 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
 import environment from '../environments/env';
+import LocalStorageService from './core/services/local-storage.service';
+import AuthService from './core/services/auth.service';
+import Auth from './shared/auth.interface';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +14,23 @@ import environment from '../environments/env';
   template: `<router-outlet />`,
 })
 export default class AppComponent implements OnInit {
-  constructor(@Inject(DOCUMENT) private readonly document: Document) {}
+  private document = inject(DOCUMENT);
+  private localStorageService = inject(LocalStorageService);
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
     if (environment.production) {
       this.setManifestLinkTag();
+    }
+
+    this.setUserSession();
+  }
+
+  private setUserSession(): void {
+    const session = this.localStorageService.getItem<Auth>('session');
+
+    if (session) {
+      this.authService.set(session);
     }
   }
 
@@ -23,7 +39,7 @@ export default class AppComponent implements OnInit {
     const headTag = this.document.querySelector('head');
 
     manifestLink.setAttribute('rel', 'manifest');
-    manifestLink.setAttribute('href', 'manifest.json');
+    manifestLink.setAttribute('href', 'assets/manifest.json');
 
     headTag?.appendChild(manifestLink);
   }

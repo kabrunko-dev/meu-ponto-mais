@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { SignInResponse } from '../../core/models/sign-in.model';
+import SignInResponse from '../../core/models/sign-in.model';
 
 @Injectable()
 export default class LoginService {

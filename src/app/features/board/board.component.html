@@ -1,0 +1,24 @@
+@if(session$ | async; as session) {
+<h4>Informações</h4>
+
+<div class="card">Banco de horas: {{ session.time_balance | clock }}</div>
+<div class="working-hours">
+  <div class="card">Trabalhado<br />{{ sWorkedHours() | clock }}</div>
+  <div class="card">Falta<br />{{ sLeftingHours() | clock }}</div>
+  <div class="card">Saída<br />{{ sClockOut() | clock }}</div>
+</div>
+
+<hr />
+
+<h4>Registros dos dias</h4>
+
+<div class="punches">
+  @for(time of times(); track time) {
+  <p class="card">{{ time }}</p>
+  }
+</div>
+} @else {
+<div style="display: grid; place-content: center; height: 100%">
+  <app-spinner diameter="96" strokeWidth="8" color="lightsalmon" />
+</div>
+}
