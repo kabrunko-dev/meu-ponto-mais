@@ -7,19 +7,23 @@ import loggedUserGuard from './core/guards/logged-user.guard';
 
 const routes: Routes = [
   {
-    path: 'login',
-    loadComponent: () => LoginComponent,
-    canActivate: [loggedUserGuard],
-  },
-  {
-    path: 'board',
-    loadComponent: () => BoardComponent,
-    canActivate: [loggedUserGuard],
-  },
-  {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
+    canActivate: [loggedUserGuard],
+    children: [
+      {
+        path: 'login',
+        loadComponent: () => LoginComponent,
+      },
+      {
+        path: 'board',
+        loadComponent: () => BoardComponent,
+      },
+      {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full',
+      },
+    ],
   },
   {
     path: '**',

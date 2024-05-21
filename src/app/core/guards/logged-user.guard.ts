@@ -20,11 +20,11 @@ const loggedUserGuard: CanActivateFn = (
 
   if (auth.isLogged()) {
     if (isLoginPath) {
-      router.navigate(['board'])
+      router.navigate(['board']);
     }
   } else {
     if (!isLoginPath) {
-      router.navigate(['login'])
+      router.navigate(['login']);
     }
   }
 
