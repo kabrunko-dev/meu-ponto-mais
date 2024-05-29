@@ -1,18 +1,33 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 import { Observable, interval } from 'rxjs';
 
 import { EmployeeResponse } from '../../core/models/session.model';
-import SessionService from './session.service';
-import WorkDaysService from './work-days.service';
+import { isToday } from '../../shared/helpers/date.helper';
+import { ClockPipe } from './pipes';
+import { SessionService, WorkDaysService } from './services';
 import SpinnerComponent from '../../shared/spinner.component';
-import ClockPipe from './clock.pipe';
+import ProfileComponent from './components/profile.component';
+import TimeTrackerComponent from './components/time-tracker.component';
+import LastRecordsComponent from './components/last-records.component';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [AsyncPipe, ClockPipe, NgFor, NgIf, SpinnerComponent],
+  imports: [
+    AsyncPipe,
+    ClockPipe,
+    DatePipe,
+    LastRecordsComponent,
+    NgFor,
+    NgIf,
+    ProfileComponent,
+    RouterLink,
+    SpinnerComponent,
+    TimeTrackerComponent,
+  ],
   providers: [SessionService, WorkDaysService],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
@@ -21,8 +36,10 @@ export default class BoardComponent implements OnInit {
   private workDaysService = inject(WorkDaysService);
   private sessionService = inject(SessionService);
 
+  today2 = signal(new Date());
   today = new Date().toISOString().split('T')[0];
   session$: Observable<EmployeeResponse> = this.sessionService.getSession();
+  isToday = computed(() => isToday(this.today2()));
 
   // TODO: Improve signals logic
   times = signal<string[]>([]);
@@ -31,16 +48,20 @@ export default class BoardComponent implements OnInit {
 
     if (times.length % 2 !== 0) {
       const hourAndMinutes = new Date()
-        .toLocaleString()
-        .split(', ')[1]
-        .slice(0, 5);
+        .toTimeString()
+        .split(':')
+        .slice(0, 2)
+        .join(':');
       times.push(hourAndMinutes);
     }
+
     return this.calculateWH(times);
   });
   sLeftingHours = computed(() => 28800 - this.sWorkedHours());
   sClockOut = computed(() => {
     const times = this.times().slice();
+
+    if (times.length === 0) return 0;
 
     if (times.length % 2 !== 0) {
       times.pop();
@@ -69,8 +90,17 @@ export default class BoardComponent implements OnInit {
       this.calculateWH(times);
     });
 
+    const now = new Date();
+    const twoDaysBefore = new Date(now);
+    twoDaysBefore.setDate(twoDaysBefore.getDate() - 20);
+
+    // Para o que eu quero é outro endpoint. Olhar a página "Meu Ponto"
+    // do PontoMais, versão web
     this.workDaysService
-      .getWorkDays(this.today, this.today)
+      .getWorkDays(
+        now.toISOString().split('T')[0],
+        now.toISOString().split('T')[0]
+      )
       .subscribe((times: string[]) => this.times.set(times));
   }
 

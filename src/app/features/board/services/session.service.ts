@@ -6,7 +6,7 @@ import { Observable, map } from 'rxjs';
 import {
   EmployeeResponse,
   SessionResponse,
-} from '../../core/models/session.model';
+} from '../../../core/models/session.model';
 
 @Injectable()
 export default class SessionService {
