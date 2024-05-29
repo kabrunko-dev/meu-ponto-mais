@@ -1,21 +1,24 @@
 @if(session$ | async; as session) {
-<h4>Informações</h4>
+<app-profile [session]="session" />
 
-<div class="card">Banco de horas: {{ session.time_balance | clock }}</div>
-<div class="working-hours">
-  <div class="card">Trabalhado<br />{{ sWorkedHours() | clock }}</div>
-  <div class="card">Falta<br />{{ sLeftingHours() | clock }}</div>
-  <div class="card">Saída<br />{{ sClockOut() | clock }}</div>
-</div>
+<div class="host">
+  <!-- TODO: Make a component -->
+  <div style="margin-bottom: 16px; text-align: center; border: 1px solid black; border-radius: 16px; padding-block: 8px">
+    <div>
+      <p>{{ today2() | date : 'dd/MM/yyyy' }}</p>
+      <p>{{ today2() | date : 'hh:mm:ss' }}</p>
+    </div>
+  </div>
 
-<hr />
+  <app-time-tracker
+    [session]="session"
+    [tracker]="{ worked: sWorkedHours(), left: sLeftingHours(), clockOut: sClockOut() }"
+  />
 
-<h4>Registros dos dias</h4>
+  <hr />
 
-<div class="punches">
-  @for(time of times(); track time) {
-  <p class="card">{{ time }}</p>
-  }
+  <app-last-records [times]="times()" />
+
 </div>
 } @else {
 <div style="display: grid; place-content: center; height: 100%">

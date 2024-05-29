@@ -1,4 +1,4 @@
-:host {
+.host {
   display: block;
   height: 100%;
   background-color: #f1f9ec;
@@ -6,31 +6,12 @@
   overflow-y: auto;
 }
 
-.punches {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.card {
-  padding: 8px;
-  border-radius: 4px;
-  background-color: white;
-  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.working-hours {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-
-  & > * {
-    flex: 1;
-  }
-}
-
 hr {
-  margin-block: 8px;
+  margin-block: 16px;
   color: white;
   opacity: 0.5;
+}
+
+.material-icons:disabled {
+  pointer-events: none;
 }

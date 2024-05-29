@@ -9,4 +9,9 @@ export interface SessionResponse {
 
 export interface EmployeeResponse {
   time_balance: number;
+  login: string;
+  name: string;
+  picture: {
+    medium_url: string;
+  }
 }
