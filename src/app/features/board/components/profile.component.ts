@@ -4,10 +4,10 @@ import { Component, Input } from '@angular/core';
   selector: 'app-profile',
   standalone: true,
   template: `
-    <img [src]="session.picture.medium_url" height="40" width="40" />
+    <img [src]="'https://' + session.picture.medium_url" height="40" width="40" />
     <div>
-      <p>{{ session.login }}</p>
       <p>{{ session.name }}</p>
+      <p>{{ session.login }}</p>
     </div>
   `,
   styles: `
