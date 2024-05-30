@@ -6,10 +6,13 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   template: `<ng-content />`,
   styles: `
     :host {
+      display: block;
       padding: 8px;
       border-radius: 4px;
       background-color: white;
-      box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+      box-shadow: 
+        rgba(0, 0, 0, 0.12) 0px 1px 3px, 
+        rgba(0, 0, 0, 0.24) 0px 1px 2px;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

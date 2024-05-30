@@ -8,10 +8,13 @@ import CardComponent from '../../../shared/components/card.component';
   standalone: true,
   imports: [CardComponent, ClockPipe],
   template: `
-    <app-card class="flex justify-between">
-      <p>Banco de horas</p>
-      <p>{{ session.time_balance | clock }}</p>
+    <app-card>
+      <div class="flex justify-between">
+        <p>Banco de horas</p>
+        <p>{{ session.time_balance | clock }}</p>
+      </div>
     </app-card>
+
     <div class="working-hours">
       <app-card>Trabalhado<br />{{ tracker.worked | clock }}</app-card>
       <app-card>Falta<br />{{ tracker.left | clock }}</app-card>

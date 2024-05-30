@@ -9,6 +9,7 @@ import { isToday } from '../../shared/helpers/date.helper';
 import { ClockPipe } from './pipes';
 import { SessionService, WorkDaysService } from './services';
 import SpinnerComponent from '../../shared/spinner.component';
+import CardComponent from '../../shared/components/card.component';
 import ProfileComponent from './components/profile.component';
 import TimeTrackerComponent from './components/time-tracker.component';
 import LastRecordsComponent from './components/last-records.component';
@@ -18,6 +19,7 @@ import LastRecordsComponent from './components/last-records.component';
   standalone: true,
   imports: [
     AsyncPipe,
+    CardComponent,
     ClockPipe,
     DatePipe,
     LastRecordsComponent,
@@ -91,14 +93,15 @@ export default class BoardComponent implements OnInit {
     });
 
     const now = new Date();
+
     const twoDaysBefore = new Date(now);
-    twoDaysBefore.setDate(twoDaysBefore.getDate() - 20);
+    twoDaysBefore.setDate(twoDaysBefore.getDate() - 4);
 
     // Para o que eu quero é outro endpoint. Olhar a página "Meu Ponto"
     // do PontoMais, versão web
     this.workDaysService
       .getWorkDays(
-        now.toISOString().split('T')[0],
+        twoDaysBefore.toISOString().split('T')[0],
         now.toISOString().split('T')[0]
       )
       .subscribe((times: string[]) => this.times.set(times));

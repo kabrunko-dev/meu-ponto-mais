@@ -15,13 +15,29 @@ export default class WorkDaysService {
         params: {
           start_date: start,
           end_date: end,
+          sort_direction: 'desc',
           attributes: 'time_cards',
         },
       })
       .pipe(
         map((response) =>
-          response.work_days[0].time_cards.map((day) => day.time)
+          // TODO: Update mapping for when `start_date` !== `end_date`
+          response.work_days
+            .map((day) => day.time_cards.map((day) => day.time))
+            .flat()
         )
       );
   }
+
+  // TODO: Use for "/meu-ponto" route/feature
+  // getTimeCardControl(start: string, end: string): Observable<any> {
+  //   return this.http.get<any>('/time_card_control/current/work_days', {
+  //     params: {
+  //       start_date: start,
+  //       end_date: end,
+  //       sort_direction: 'desc',
+  //       sort_property: 'date'
+  //     },
+  //   });
+  // }
 }

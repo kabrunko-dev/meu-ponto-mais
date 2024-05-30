@@ -1,9 +1,15 @@
-.host {
+:host {
   display: block;
-  height: 100%;
   background-color: #f1f9ec;
-  padding: 16px;
+  height: 100%;
   overflow-y: auto;
+}
+
+.host {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 16px;
 }
 
 hr {
