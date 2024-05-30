@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   template: `
     <img [src]="'https://' + session.picture.medium_url" height="40" width="40" />
     <div>
-      <p>{{ session.name }}</p>
+      <p style="font-weight: bold">{{ session.name }}</p>
       <p>{{ session.login }}</p>
     </div>
   `,
@@ -18,6 +18,7 @@ import { Component, Input } from '@angular/core';
       background-color: lightgreen;
       padding: 16px;
       font-size: 10px;
+      border-radius: 0 0 18px 18px;
     }
 
     img {

@@ -1,27 +1,22 @@
 @if(session$ | async; as session) {
-<app-profile [session]="session" />
+    <app-profile [session]="session" />
 
-<div class="host">
-  <!-- TODO: Make a component -->
-  <div style="margin-bottom: 16px; text-align: center; border: 1px solid black; border-radius: 16px; padding-block: 8px">
-    <div>
-      <p>{{ today2() | date : 'dd/MM/yyyy' }}</p>
-      <p>{{ today2() | date : 'hh:mm:ss' }}</p>
+    <div class="host">
+      <!-- TODO: Make a component -->
+      <div style="text-align: center; margin-top: 16px;">
+        <h2>{{ today2() | date : 'hh:mm:ss' }}</h2>
+        <p>{{ today2() | date : 'dd/MM/yyyy, EEEE' }}</p>
+      </div>
+
+      <app-time-tracker
+        [session]="session"
+        [tracker]="{ worked: sWorkedHours(), left: sLeftingHours(), clockOut: sClockOut() }"
+      />
+
+      <app-last-records [times]="times()" />
     </div>
-  </div>
-
-  <app-time-tracker
-    [session]="session"
-    [tracker]="{ worked: sWorkedHours(), left: sLeftingHours(), clockOut: sClockOut() }"
-  />
-
-  <hr />
-
-  <app-last-records [times]="times()" />
-
-</div>
 } @else {
-<div style="display: grid; place-content: center; height: 100%">
-  <app-spinner diameter="96" strokeWidth="8" color="lightsalmon" />
-</div>
+  <div style="display: grid; place-content: center; height: 100%">
+    <app-spinner diameter="96" strokeWidth="8" color="lightgreen" />
+  </div>
 }

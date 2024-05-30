@@ -19,7 +19,9 @@ import CardComponent from '../../../shared/components/card.component';
       }
 
       @if (times.length > 0) {
-        <a routerLink="/teste" style="text-align: center">Ver mais</a>
+        <a routerLink="/teste" style="text-align: center">
+          <small>Ver mais</small>
+        </a>
       }
     </div>
   `,
