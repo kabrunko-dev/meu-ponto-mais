@@ -5,7 +5,9 @@ import { Observable, map } from 'rxjs';
 
 import { WorkDaysResponse } from '../../../core/models/work-days.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export default class WorkDaysService {
   private http = inject(HttpClient);
 
@@ -30,14 +32,16 @@ export default class WorkDaysService {
   }
 
   // TODO: Use for "/meu-ponto" route/feature
-  // getTimeCardControl(start: string, end: string): Observable<any> {
-  //   return this.http.get<any>('/time_card_control/current/work_days', {
-  //     params: {
-  //       start_date: start,
-  //       end_date: end,
-  //       sort_direction: 'desc',
-  //       sort_property: 'date'
-  //     },
-  //   });
-  // }
+  getTimeCardControl(start: string, end: string): Observable<any> {
+    return this.http
+      .get<any>('/time_card_control/current/work_days', {
+        params: {
+          start_date: start,
+          end_date: end,
+          sort_direction: 'desc',
+          sort_property: 'date',
+        },
+      })
+      .pipe(map((value) => value.work_days));
+  }
 }
