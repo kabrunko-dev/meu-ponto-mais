@@ -1,5 +1,5 @@
 @if(session$ | async; as session) {
-    <app-profile [session]="session" />
+    <app-profile [session]="session" (signOut)="onSignOut()" />
 
     <div class="host">
       <!-- TODO: Make a component -->

@@ -1,6 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { Observable, interval } from 'rxjs';
 
@@ -13,6 +13,9 @@ import CardComponent from '../../shared/components/card.component';
 import ProfileComponent from './components/profile.component';
 import TimeTrackerComponent from './components/time-tracker.component';
 import LastRecordsComponent from './components/last-records.component';
+import LoginService from '../login/login.service';
+import AuthService from '../../core/services/auth.service';
+import LocalStorageService from '../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-board',
@@ -30,13 +33,17 @@ import LastRecordsComponent from './components/last-records.component';
     SpinnerComponent,
     TimeTrackerComponent,
   ],
-  providers: [SessionService, WorkDaysService],
+  providers: [LoginService, SessionService, WorkDaysService],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
 })
 export default class BoardComponent implements OnInit {
+  private localStorageService = inject(LocalStorageService);
   private workDaysService = inject(WorkDaysService);
   private sessionService = inject(SessionService);
+  private loginService = inject(LoginService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   today2 = signal(new Date());
   today = new Date().toISOString().split('T')[0];
@@ -105,6 +112,14 @@ export default class BoardComponent implements OnInit {
         now.toISOString().split('T')[0]
       )
       .subscribe((times: string[]) => this.times.set(times));
+  }
+
+  onSignOut(): void {
+    this.loginService.signOut().subscribe(() => {
+      this.authService.set(null);
+      this.localStorageService.removeItem('session');
+      this.router.navigate(['login']);
+    });
   }
 
   private calculateWH(times: string[]): number {

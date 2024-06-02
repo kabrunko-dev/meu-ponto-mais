@@ -1,14 +1,21 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   template: `
-    <img [src]="'https://' + session.picture.medium_url" height="40" width="40" />
+    <img
+      [src]="'https://' + session.picture.medium_url"
+      height="40"
+      width="40"
+    />
     <div>
       <p style="font-weight: bold">{{ session.name }}</p>
       <p>{{ session.login }}</p>
     </div>
+    <button (click)="signOut.emit()">
+      <span class="material-icons-outlined">logout</span>
+    </button>
   `,
   styles: `
     :host {
@@ -30,4 +37,7 @@ import { Component, Input } from '@angular/core';
 export default class ProfileComponent {
   @Input()
   session: any;
+
+  @Output()
+  signOut = new EventEmitter<never>();
 }
