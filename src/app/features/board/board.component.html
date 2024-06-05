@@ -1,22 +1,17 @@
 @if(session$ | async; as session) {
-    <app-profile [session]="session" (signOut)="onSignOut()" />
+<app-profile [session]="session" (signOut)="onSignOut()" />
 
-    <div class="host">
-      <!-- TODO: Make a component -->
-      <div style="text-align: center; margin-top: 16px;">
-        <h2>{{ today2() | date : 'hh:mm:ss' }}</h2>
-        <p>{{ today2() | date : 'dd/MM/yyyy, EEEE' }}</p>
-      </div>
-
-      <app-time-tracker
-        [session]="session"
-        [tracker]="{ worked: sWorkedHours(), left: sLeftingHours(), clockOut: sClockOut() }"
-      />
-
-      <app-last-records [times]="times()" />
-    </div>
-} @else {
-  <div style="display: grid; place-content: center; height: 100%">
-    <app-spinner diameter="96" strokeWidth="8" color="lightgreen" />
+<main class="board">
+  <div class="board__clock">
+    <h2>{{ today2() | date : 'hh:mm:ss' }}</h2>
+    <p>{{ today2() | date : 'dd/MM/yyyy, EEEE' }}</p>
   </div>
+
+  <app-time-tracker
+    [session]="session"
+    [tracker]="{ worked: sWorkedHours(), left: sLeftingHours(), clockOut: sClockOut() }"
+  />
+
+  <app-last-records [times]="times()" />
+</main>
 }

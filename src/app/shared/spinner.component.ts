@@ -1,11 +1,42 @@
-import { Component, HostBinding, Input, numberAttribute } from '@angular/core';
+import { Component } from '@angular/core';
+import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
+
+import { LoadingService } from '../core/services';
 
 @Component({
   selector: 'app-spinner',
   standalone: true,
-  template: ``,
+  imports: [AsyncPipe, NgIf, NgStyle],
+  template: `
+    @if (loadingService.onLoadingChange | async) {
+      <div class="overlay">
+        <div
+          class="spinner"
+          [ngStyle]="{
+            'width.px': diameter,
+            'height.px': diameter,
+            'border-width.px': strokeWidth,
+            'border-bottom-color': color,
+            'border-left-color': color,
+            'border-top-color': color
+          }"
+        ></div>
+      </div>
+    }
+  `,
   styles: `
-    :host {
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: #f1f9ec;
+      display: grid;
+      place-content: center;
+    }
+
+    .spinner {
       display: block;
       border-radius: 50%;
       border: 4px solid white;
@@ -24,18 +55,9 @@ import { Component, HostBinding, Input, numberAttribute } from '@angular/core';
   `,
 })
 export default class SpinnerComponent {
-  @Input({ transform: numberAttribute })
-  @HostBinding('style.width.px')
-  @HostBinding('style.height.px')
-  diameter = 24;
+  diameter = 96;
+  strokeWidth = 8;
+  color = 'limegreen';
 
-  @Input({ transform: numberAttribute })
-  @HostBinding('style.border-width.px')
-  strokeWidth = 4;
-
-  @Input()
-  @HostBinding('style.border-bottom-color')
-  @HostBinding('style.border-left-color')
-  @HostBinding('style.border-top-color')
-  color: string = 'white';
+  constructor(public loadingService: LoadingService) {}
 }

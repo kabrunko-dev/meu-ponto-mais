@@ -2,16 +2,26 @@ import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
+import { AuthService, LocalStorageService } from './core/services';
 import environment from '../environments/env';
-import LocalStorageService from './core/services/local-storage.service';
-import AuthService from './core/services/auth.service';
 import Auth from './shared/auth.interface';
+import SpinnerComponent from './shared/spinner.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
-  template: `<router-outlet />`,
+  imports: [RouterOutlet, SpinnerComponent],
+  template: `
+    <app-spinner />
+    <router-outlet />
+  `,
+  styles: `
+    :host {
+      display: block;
+      height: 100%;
+      overflow-y: auto;
+    }
+  `,
 })
 export default class AppComponent implements OnInit {
   private document = inject(DOCUMENT);
@@ -19,11 +29,11 @@ export default class AppComponent implements OnInit {
   private authService = inject(AuthService);
 
   ngOnInit(): void {
+    this.setUserSession();
+
     if (environment.production) {
       this.setManifestLinkTag();
     }
-
-    this.setUserSession();
   }
 
   private setUserSession(): void {
@@ -34,6 +44,7 @@ export default class AppComponent implements OnInit {
     }
   }
 
+  // TODO: Refactor to use Angular's renderer3
   private setManifestLinkTag(): void {
     const manifestLink = this.document.createElement('link');
     const headTag = this.document.querySelector('head');
