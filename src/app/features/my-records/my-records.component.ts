@@ -1,11 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AsyncPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
+import { Observable } from 'rxjs';
+
+import { ClockPipe } from '../board/pipes';
 import { WorkDaysService } from '../board/services';
 import CardComponent from '../../shared/components/card.component';
-import { ClockPipe } from '../board/pipes';
-import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-my-records',
@@ -20,30 +21,26 @@ import { Observable, map } from 'rxjs';
     SlicePipe,
   ],
   template: `
-    <header>
-      <a routerLink="/board" type="button">
-        <span class="material-icons-outlined"> arrow_back </span>
-      </a>
-      <h3>Meu Ponto</h3>
-    </header>
+    @if (mock2$ | async; as values) {
+      <header>
+        <a routerLink="/board" type="button">
+          <span class="material-icons-outlined">arrow_back</span>
+        </a>
+        <h3>Meu Ponto</h3>
+      </header>
 
-    @for (value of mock$ | async; track value.id) {
-      <app-card>
-        <div class="card__header">
-          <p>{{ value.date }}</p>
-          @if (value.time_cards.length > 0) {
-            <p>
-              {{ value.time_cards | slice: 0 : 1 }} -
-              {{ value.time_cards | slice: -1 }}
-            </p>
-          }
-        </div>
-        <div style="display: flex; gap 16px; justify-content: space-between;">
-          <p>{{ value.extra_time | clock }}</p>
-          <p>{{ value.missing_time | clock }}</p>
-          <p>{{ value.time_balance | clock }}</p>
-        </div>
-      </app-card>
+      @for (value of values; track value.id) {
+        <app-card>
+          <div class="card__header">
+            <p>{{ value.date }}</p>
+          </div>
+          <div style="display: flex; gap 16px; justify-content: space-between;">
+            <p>{{ value.extra_time | clock }}</p>
+            <p>{{ value.missing_time | clock }}</p>
+            <p>{{ value.time_balance | clock }}</p>
+          </div>
+        </app-card>
+      }
     }
   `,
   styles: `
@@ -75,29 +72,19 @@ import { Observable, map } from 'rxjs';
     }
   `,
 })
-export default class MyRecordsComponent {
-  private workDaysService = inject(WorkDaysService);
+export default class MyRecordsComponent implements OnInit {
+  private wds = inject(WorkDaysService);
 
-  mock$ = new Observable<any>();
+  now = new Date();
+  twoDaysBefore = new Date();
+  mock2$!: Observable<any>;
 
-  constructor() {
-    const now = new Date();
-    const twoDaysBefore = new Date(now);
-    twoDaysBefore.setDate(twoDaysBefore.getDate() - 15);
+  ngOnInit(): void {
+    this.twoDaysBefore.setDate(this.twoDaysBefore.getDate() - 8);
 
-    this.mock$ = this.workDaysService
-      .getTimeCardControl(
-        twoDaysBefore.toISOString().split('T')[0],
-        now.toISOString().split('T')[0]
-      )
-      .pipe(
-        map((value) =>
-          value.map((v: any) => ({
-            ...v,
-            date: v.date.split('-').reverse().join('/'),
-            time_cards: v.time_cards.map((tc: any) => tc.time),
-          }))
-        )
-      );
+    this.mock2$ = this.wds.getTimeCardControl(
+      this.twoDaysBefore.toISOString().split('T')[0],
+      this.now.toISOString().split('T')[0]
+    );
   }
 }
