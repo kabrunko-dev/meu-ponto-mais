@@ -1,6 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { Observable, interval } from 'rxjs';
 
@@ -39,10 +39,11 @@ import LocalStorageService from '../../core/services/local-storage.service';
 })
 export default class BoardComponent implements OnInit {
   private localStorageService = inject(LocalStorageService);
-  private workDaysService = inject(WorkDaysService);
+  private activatedRoute = inject(ActivatedRoute);
   private sessionService = inject(SessionService);
   private loginService = inject(LoginService);
   private authService = inject(AuthService);
+  private workDaysService = inject(WorkDaysService);
   private router = inject(Router);
 
   today2 = signal(new Date());
@@ -99,8 +100,13 @@ export default class BoardComponent implements OnInit {
       this.calculateWH(times);
     });
 
-    const now = new Date();
+    // #1: with resolver
+    // this.activatedRoute.data.subscribe((value: any) => {
+    //   this.times.set(value.data);
+    // });
 
+    // #2: without resolver
+    const now = new Date();
     const twoDaysBefore = new Date(now);
     twoDaysBefore.setDate(twoDaysBefore.getDate() - 4);
 
