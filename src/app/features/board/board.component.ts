@@ -1,21 +1,21 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { Observable, interval } from 'rxjs';
 
-import { EmployeeResponse } from '../../core/models/session.model';
-import { isToday } from '../../shared/helpers/date.helper';
+import SpinnerComponent from '@shared/spinner.component';
+import { isToday } from '@shared/helpers/date.helper';
+import CardComponent from '@shared/components/card.component';
+import { EmployeeResponse } from '@core/models/session.model';
+import AuthService from '@core/services/auth.service';
+import LocalStorageService from '@core/services/local-storage.service';
 import { ClockPipe } from './pipes';
 import { SessionService, WorkDaysService } from './services';
-import SpinnerComponent from '../../shared/spinner.component';
-import CardComponent from '../../shared/components/card.component';
 import ProfileComponent from './components/profile.component';
 import TimeTrackerComponent from './components/time-tracker.component';
 import LastRecordsComponent from './components/last-records.component';
 import LoginService from '../login/login.service';
-import AuthService from '../../core/services/auth.service';
-import LocalStorageService from '../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-board',
@@ -39,7 +39,6 @@ import LocalStorageService from '../../core/services/local-storage.service';
 })
 export default class BoardComponent implements OnInit {
   private localStorageService = inject(LocalStorageService);
-  private activatedRoute = inject(ActivatedRoute);
   private sessionService = inject(SessionService);
   private loginService = inject(LoginService);
   private authService = inject(AuthService);
@@ -52,9 +51,11 @@ export default class BoardComponent implements OnInit {
   isToday = computed(() => isToday(this.today2()));
 
   // TODO: Improve signals logic
-  times = signal<string[]>([]);
+  records = signal<string[]>([]);
+  todayRecords = signal<string[]>([]);
+
   sWorkedHours = computed(() => {
-    const times = this.times().slice();
+    const times = this.todayRecords().slice();
 
     if (times.length % 2 !== 0) {
       const hourAndMinutes = new Date()
@@ -69,7 +70,7 @@ export default class BoardComponent implements OnInit {
   });
   sLeftingHours = computed(() => 28800 - this.sWorkedHours());
   sClockOut = computed(() => {
-    const times = this.times().slice();
+    const times = this.todayRecords().slice();
 
     if (times.length === 0) return 0;
 
@@ -78,16 +79,16 @@ export default class BoardComponent implements OnInit {
     }
 
     return (
-      this.getTime(this.times()[this.times().length - 1]) +
+      this.getTime(this.todayRecords()[this.todayRecords().length - 1]) +
       (28800 - this.calculateWH(times))
     );
   });
 
   ngOnInit(): void {
     interval(1000).subscribe(() => {
-      if (this.times().length === 0) return;
+      if (this.todayRecords().length === 0) return;
 
-      const times = this.times().slice();
+      const times = this.todayRecords().slice();
 
       if (times.length % 2 !== 0) {
         const hourAndMinutes = new Date()
@@ -100,12 +101,6 @@ export default class BoardComponent implements OnInit {
       this.calculateWH(times);
     });
 
-    // #1: with resolver
-    // this.activatedRoute.data.subscribe((value: any) => {
-    //   this.times.set(value.data);
-    // });
-
-    // #2: without resolver
     const now = new Date();
     const twoDaysBefore = new Date(now);
     twoDaysBefore.setDate(twoDaysBefore.getDate() - 4);
@@ -117,7 +112,19 @@ export default class BoardComponent implements OnInit {
         twoDaysBefore.toISOString().split('T')[0],
         now.toISOString().split('T')[0]
       )
-      .subscribe((times: string[]) => this.times.set(times));
+      .subscribe((times: any[]) => {
+        const _times = times
+          .map((t) => t.time_cards.map((tc: any) => tc.time))
+          .flat();
+
+        const todayStr = this.today.split('-').reverse().join('/');
+        const todayCards = times.find((t) => t.date === todayStr);
+        this.todayRecords.set(todayCards.time_cards.map((tc: any) => tc.time));
+        console.log(todayCards);
+        console.log(this.todayRecords());
+
+        this.records.set(_times);
+      });
   }
 
   onSignOut(): void {

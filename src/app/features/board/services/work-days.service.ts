@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 
 import { Observable, map } from 'rxjs';
 
-import { WorkDaysResponse } from '../../../core/models/work-days.model';
+import { WorkDaysResponse } from '@core/models/work-days.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,24 +11,17 @@ import { WorkDaysResponse } from '../../../core/models/work-days.model';
 export default class WorkDaysService {
   private http = inject(HttpClient);
 
-  getWorkDays(start: string, end: string): Observable<string[]> {
+  getWorkDays(start: string, end: string): Observable<any[]> {
     return this.http
       .get<WorkDaysResponse>('/time_cards/work_days/current', {
         params: {
           start_date: start,
           end_date: end,
           sort_direction: 'desc',
-          attributes: 'time_cards',
+          attributes: 'time_cards,date',
         },
       })
-      .pipe(
-        map((response) =>
-          // TODO: Update mapping for when `start_date` !== `end_date`
-          response.work_days
-            .map((day) => day.time_cards.map((day) => day.time))
-            .flat()
-        )
-      );
+      .pipe(map((response: WorkDaysResponse) => response.work_days));
   }
 
   // TODO: Use for "/meu-ponto" route/feature
