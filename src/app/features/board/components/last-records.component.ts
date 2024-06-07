@@ -1,8 +1,9 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+
 import { ReversePipe } from '../pipes';
-import CardComponent from '../../../shared/components/card.component';
+import CardComponent from '@shared/components/card.component';
 
 @Component({
   selector: 'app-last-records',
@@ -12,13 +13,13 @@ import CardComponent from '../../../shared/components/card.component';
     <h4>Últimos registros</h4>
 
     <div class="punches">
-      @for (time of times | reverse; track time; let odd = $odd) {
+      @for (time of records | reverse; track time; let odd = $odd) {
         <app-card>{{ time }}</app-card>
       } @empty {
         <p>Sem registros</p>
       }
 
-      @if (times.length > 0) {
+      @if (records.length > 0) {
         <a routerLink="/my-records" style="text-align: center">
           <small>Ver mais</small>
         </a>
@@ -42,5 +43,5 @@ import CardComponent from '../../../shared/components/card.component';
 })
 export default class LastRecordsComponent {
   @Input()
-  times: any[] = [];
+  records: string[] = [];
 }

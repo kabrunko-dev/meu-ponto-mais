@@ -6,6 +6,7 @@ export interface WorkDaysResponse {
 }
 
 export interface WorkDayResponse {
+  date: string;
   time_cards: TimeCardResponse[];
 }
 
