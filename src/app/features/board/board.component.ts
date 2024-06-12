@@ -1,6 +1,7 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { Observable, interval } from 'rxjs';
 
@@ -84,47 +85,41 @@ export default class BoardComponent implements OnInit {
     );
   });
 
+  constructor() {
+    interval(1000)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        if (this.todayRecords().length === 0) return;
+
+        const times = this.todayRecords().slice();
+
+        if (times.length % 2 !== 0) {
+          const hourAndMinutes = new Date()
+            .toLocaleString()
+            .split(', ')[1]
+            .slice(0, 5);
+          times.push(hourAndMinutes);
+        }
+
+        this.calculateWH(times);
+        this.today2.set(new Date());
+      });
+  }
+
   ngOnInit(): void {
-    interval(1000).subscribe(() => {
-      if (this.todayRecords().length === 0) return;
-
-      const times = this.todayRecords().slice();
-
-      if (times.length % 2 !== 0) {
-        const hourAndMinutes = new Date()
-          .toLocaleString()
-          .split(', ')[1]
-          .slice(0, 5);
-        times.push(hourAndMinutes);
-      }
-
-      this.calculateWH(times);
-    });
-
-    const now = new Date();
-    const twoDaysBefore = new Date(now);
-    twoDaysBefore.setDate(twoDaysBefore.getDate() - 4);
-
     // Para o que eu quero é outro endpoint. Olhar a página "Meu Ponto"
     // do PontoMais, versão web
-    this.workDaysService
-      .getWorkDays(
-        twoDaysBefore.toISOString().split('T')[0],
-        now.toISOString().split('T')[0]
-      )
-      .subscribe((times: any[]) => {
-        const _times = times
-          .map((t) => t.time_cards.map((tc: any) => tc.time))
-          .flat();
+    const now = new Date().toISOString().split('T')[0];
+    this.workDaysService.getWorkDays(now, now).subscribe((times: any[]) => {
+      const _times = times
+        .map(({ time_cards }) => time_cards.map((tc: any) => tc.time))
+        .flat();
 
-        const todayStr = this.today.split('-').reverse().join('/');
-        const todayCards = times.find((t) => t.date === todayStr);
-        this.todayRecords.set(todayCards.time_cards.map((tc: any) => tc.time));
-        console.log(todayCards);
-        console.log(this.todayRecords());
-
-        this.records.set(_times);
-      });
+      const todayStr = this.today.split('-').reverse().join('/');
+      const todayCards = times.find((t) => t.date === todayStr);
+      this.todayRecords.set(todayCards.time_cards.map((tc: any) => tc.time));
+      this.records.set(_times);
+    });
   }
 
   onSignOut(): void {
