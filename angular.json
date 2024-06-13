@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "pontador-mais": {
+    "rastreia-mais": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/pontador-mais",
+            "outputPath": "dist/rastreia-mais",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -80,10 +80,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "pontador-mais:build:production"
+              "buildTarget": "rastreia-mais:build:production"
             },
             "development": {
-              "buildTarget": "pontador-mais:build:development"
+              "buildTarget": "rastreia-mais:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -91,7 +91,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "pontador-mais:build"
+            "buildTarget": "rastreia-mais:build"
           }
         },
         "test": {
