@@ -1,9 +1,9 @@
 @if(session$ | async; as session) {
 <app-profile [session]="session" (signOut)="onSignOut()" />
 
-<main class="board">
+<main class="board flex flex-column gap-32">
   <div class="board__clock">
-    <h2>{{ today2() | date : 'hh:mm:ss' }}</h2>
+    <h2>{{ today2() | date : 'HH:mm:ss' }}</h2>
     <p>{{ today2() | date : 'dd/MM/yyyy, EEEE' }}</p>
   </div>
 

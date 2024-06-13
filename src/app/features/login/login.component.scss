@@ -1,33 +1,17 @@
+@use 'assets/variables';
+@use 'assets/shadows' as *;
+
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 100%;
-  background-color: #f1f9ec;
   padding: 16px;
 }
 
+h1,
 .logo {
   text-align: center;
-}
-
-.error {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: 14px;
-  padding: 8px;
-  color: #f1f9ec;
-  background-color: #ca3325;
-  border: 1px solid #ca3325;
-  border-radius: 8px;
-  margin-block: 8px;
-
-  &__button {
-    background-color: transparent;
-    color: inherit;
-    cursor: pointer;
-    border: 0;
-  }
 }
 
 .form {
@@ -37,27 +21,36 @@
 
   &__label {
     display: block;
+    font-weight: bold;
   }
 
   &__input {
     width: 100%;
-    padding: 4px;
+    padding: 8px;
     border-radius: 6px;
-    border: 1px solid gray;
+    border: 1px solid variables.$gray-default;
+    @include shadow;
+
+    &:focus {
+      outline: 1px solid variables.$black-default;
+    }
   }
 
   &__button {
-    background-color: #00b11d;
+    background-color: variables.$green-default;
+    color: variables.$green-light;
     border-radius: 8px;
     border: 0;
-    padding-block: 8px;
     cursor: pointer;
-    display: flex;
-    place-content: center;
-    color: #f1f9ec;
+    padding: 8px;
   }
 }
 
 small {
-  color: red;
+  color: variables.$red-default;
+}
+
+.material-icons-round {
+  font-size: 144px;
+  rotate: 25deg;
 }

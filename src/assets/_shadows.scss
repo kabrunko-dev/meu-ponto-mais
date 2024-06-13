@@ -1,0 +1,6 @@
+@use './variables';
+
+@mixin shadow($color: variables.$black-default) {
+  // Color is $black-default
+  box-shadow: 2px 2px 3px rgba(18, 52, 66, 0.5);
+}

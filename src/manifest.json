@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "PontadorMais",
+  "name": "RastreiaMais",
   "version": "1.0",
-  "description": "Uma extensão para ajudar no dia a dia",
+  "description": "Uma extensão para ajudar no rastreio do seu dia no trabalho de seu PontoMais",
   "action": {
-    "default_title": "PontadorMais",
+    "default_title": "RastreiaMais",
     "default_popup": "index.html"
   }
 }

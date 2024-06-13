@@ -1,6 +1,5 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { RouterLink } from '@angular/router';
 
 import { ReversePipe } from '../pipes';
 import CardComponent from '@shared/components/card.component';
@@ -8,42 +7,24 @@ import CardComponent from '@shared/components/card.component';
 @Component({
   selector: 'app-last-records',
   standalone: true,
-  imports: [CardComponent, NgFor, NgIf, ReversePipe, RouterLink],
+  imports: [CardComponent, NgFor, ReversePipe],
   template: `
     <h4>Últimos registros</h4>
-
-    <div class="punches">
+    <div class="flex flex-column gap-8">
       @for (time of records | reverse; track time; let odd = $odd) {
-        <app-card class="punches__card">
-          <span class="material-icons-outlined">{{
-            odd ? 'logout' : 'login'
-          }}</span>
+        <app-card class="flex align-center gap-8">
+          <span
+            class="material-icons-outlined"
+            [title]="odd ? 'Saída' : 'Entrada'"
+          >
+            {{ odd ? 'logout' : 'login' }}
+          </span>
           <p>{{ time }}</p>
         </app-card>
       } @empty {
         <p>Sem registros</p>
       }
     </div>
-  `,
-  styles: `
-    .punches {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-
-      &__card {
-        display: flex;
-        align-items: 8px;
-        gap: 8px;
-      }
-    }
-
-    .card {
-      padding: 8px;
-      border-radius: 4px;
-      background-color: white;
-      box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
-    }
   `,
 })
 export default class LastRecordsComponent {

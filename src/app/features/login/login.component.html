@@ -1,14 +1,8 @@
-<div class="logo">
-  <h1>PontadorMais</h1>
-  <img src="assets/login-icon.webp" height="144" width="144" />
-</div>
+<h1>RastreiaMais</h1>
 
-@if(error) {
-<div class="error">
-  <p>{{ error }}</p>
-  <button class="error__button" (click)="onErrorClick()">X</button>
+<div class="logo">
+  <span class="material-icons-round">punch_clock</span>
 </div>
-}
 
 <form class="form" [formGroup]="credentials" (ngSubmit)="onSubmit()">
   <div>
@@ -36,13 +30,9 @@
   </div>
   @if(isSubmitted) { @if(password?.errors?.['required'] &&
   email?.errors?.['required']) {
-  <small>Por favor digite seu e-mail e senha</small>
+  <small>Por favor, digite seu e-mail e senha</small>
   } @if(email?.errors?.['email']) {
   <small>Email inválido</small>
   } }
-  <button class="form__button">
-    @if(!isLoading) { Acessar } @else {
-    <app-spinner diameter="16" strokeWidth="2" />
-    }
-  </button>
+  <button class="form__button">Acessar</button>
 </form>
