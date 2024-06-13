@@ -14,15 +14,14 @@ import CardComponent from '@shared/components/card.component';
 
     <div class="punches">
       @for (time of records | reverse; track time; let odd = $odd) {
-        <app-card>{{ time }}</app-card>
+        <app-card class="punches__card">
+          <span class="material-icons-outlined">{{
+            odd ? 'logout' : 'login'
+          }}</span>
+          <p>{{ time }}</p>
+        </app-card>
       } @empty {
         <p>Sem registros</p>
-      }
-
-      @if (records.length > 0) {
-        <a routerLink="/my-records" style="text-align: center">
-          <small>Ver mais</small>
-        </a>
       }
     </div>
   `,
@@ -31,6 +30,12 @@ import CardComponent from '@shared/components/card.component';
       display: flex;
       flex-direction: column;
       gap: 8px;
+
+      &__card {
+        display: flex;
+        align-items: 8px;
+        gap: 8px;
+      }
     }
 
     .card {

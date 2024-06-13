@@ -19,10 +19,10 @@ const routes: Routes = [
         path: 'board',
         loadComponent: () => BoardComponent,
       },
-      {
-        path: 'my-records',
-        loadComponent: () => MyRecordsComponent,
-      },
+      // {
+      //   path: 'my-records',
+      //   loadComponent: () => MyRecordsComponent,
+      // },
       {
         path: '',
         redirectTo: 'login',

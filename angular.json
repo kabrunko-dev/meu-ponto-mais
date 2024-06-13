@@ -46,7 +46,15 @@
                   "replace": "src/environments/env.ts",
                   "with": "src/environments/env.prod.ts"
                 }
-              ]
+              ],
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              }
             },
             "development": {
               "optimization": false,
