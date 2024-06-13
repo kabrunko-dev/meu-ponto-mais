@@ -10,21 +10,25 @@ import CardComponent from '../../../shared/components/card.component';
   template: `
     <app-card>
       <div class="flex justify-between">
-        <p>Banco de horas</p>
+        <p><strong>Banco de horas</strong></p>
         <p>{{ session.time_balance | clock }}</p>
       </div>
     </app-card>
 
-    <div class="working-hours">
-      <app-card>Trabalhado<br />{{ tracker.worked | clock }}</app-card>
-      <app-card>Falta<br />{{ tracker.left | clock }}</app-card>
-      <app-card>Saída<br />{{ tracker.clockOut | clock }}</app-card>
+    <div class="flex gap-8 working-hours">
+      <app-card
+        ><strong>Trabalhado</strong><br />{{ tracker.worked | clock }}</app-card
+      >
+      <app-card
+        ><strong>Faltam</strong><br />{{ tracker.left | clock }}</app-card
+      >
+      <app-card
+        ><strong>Saída</strong><br />{{ tracker.clockOut | clock }}</app-card
+      >
     </div>
   `,
   styles: `
     .working-hours {
-      display: flex;
-      gap: 8px;
       margin-top: 8px;
 
       & > * {

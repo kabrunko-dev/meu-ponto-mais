@@ -1,0 +1,32 @@
+@use 'sass:math';
+
+.flex {
+  display: flex !important;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.align-center {
+  align-items: center;
+}
+
+$justifies: (
+  'between': space-between,
+  'center': center,
+);
+
+@each $justify, $value in $justifies {
+  .justify-#{$justify} {
+    justify-content: $value;
+  }
+}
+
+@for $i from 1 through 5 {
+  $gap: math.pow(2, $i);
+
+  .gap-#{$gap} {
+    gap: #{$gap}px;
+  }
+}

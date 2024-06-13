@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -11,10 +10,10 @@ import { NgIf } from '@angular/common';
 import { EMPTY, catchError } from 'rxjs';
 
 import LoginService from './login.service';
-import SpinnerComponent from '../../shared/spinner.component';
-import AuthService from '../../core/services/auth.service';
-import LocalStorageService from '../../core/services/local-storage.service';
-import SignInResponse from '../../core/models/sign-in.model';
+import SpinnerComponent from '@shared/spinner.component';
+import AuthService from '@core/services/auth.service';
+import LocalStorageService from '@core/services/local-storage.service';
+import SignInResponse from '@core/models/sign-in.model';
 
 @Component({
   selector: 'app-login',
@@ -48,10 +47,6 @@ export default class LoginComponent {
     return this.credentials.get('password');
   }
 
-  onErrorClick(): void {
-    this.error = '';
-  }
-
   onSubmit(): void {
     this.isSubmitted = true;
 
@@ -67,9 +62,9 @@ export default class LoginComponent {
     this.credentialsService
       .signIn(email, password)
       .pipe(
-        catchError((error: HttpErrorResponse) => {
-          this.error = error.error.error;
+        catchError(() => {
           this.isLoading = false;
+          this.isSubmitted = false;
           return EMPTY;
         })
       )

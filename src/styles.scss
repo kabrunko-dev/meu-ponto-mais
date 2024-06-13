@@ -1,24 +1,27 @@
-@import 'material-icons/iconfont/material-icons.css';
+@use 'assets/reset';
+@use 'assets/variables';
+@use 'assets/colors';
+@use 'assets/flex';
 
-*,
-*:after,
-*:before {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
+// @import 'material-icons/iconfont/material-icons.css';
+@import 'material-icons/iconfont/outlined.css';
+@import 'material-icons/iconfont/round.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 html {
   height: 494px;
   width: 320px;
+  min-width: 320px; // For Firefox
   overflow-y: auto;
-  background-color: #f1f9ec;
+  background-color: variables.$green-light;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
   position: relative;
   height: 100%;
   line-height: 1.5;
+  color: variables.$black-default;
 }
 
 button {
@@ -26,32 +29,6 @@ button {
   background-color: transparent;
   border: 0;
   border-radius: 50%;
-  transition: all 0.2s linear;
-
-  &:hover {
-    background-color: lightgray;
-  }
-}
-
-a:active,
-a:visited {
-  color: black;
-}
-
-.flex {
-  display: flex;
-}
-
-.flex-column {
-  flex-direction: column;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.justify-center {
-  justify-content: center;
 }
 
 .material-icons {

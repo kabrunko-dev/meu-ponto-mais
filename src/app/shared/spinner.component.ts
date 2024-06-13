@@ -25,15 +25,18 @@ import { LoadingService } from '../core/services';
     }
   `,
   styles: `
+    @use 'assets/variables';
+
     .overlay {
       position: absolute;
       top: 0;
       left: 0;
       height: 100%;
       width: 100%;
-      background-color: #f1f9ec;
       display: grid;
       place-content: center;
+      z-index: 999;
+      background-color: variables.$green-light;
     }
 
     .spinner {
