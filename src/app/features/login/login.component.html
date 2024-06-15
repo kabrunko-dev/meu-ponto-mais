@@ -1,5 +1,24 @@
 <img src="assets/logo.svg" alt="Logo do MeuPontoMais+" height="164" />
 
+@if(error) {
+<div class="error flex align-center justify-between">
+  <p>{{ error }}</p>
+  <svg
+    class="error__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24px"
+    width="24px"
+    fill="#ffffff"
+    viewBox="0 -960 960 960"
+    (click)="onCloseError()"
+  >
+    <path
+      d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+    />
+  </svg>
+</div>
+}
+
 <form class="form" [formGroup]="credentials" (ngSubmit)="onSubmit()">
   <div>
     <label for="email" class="form__label">Email</label>
@@ -24,11 +43,9 @@
       required
     />
   </div>
-  @if(isSubmitted) { @if(password?.errors?.['required'] &&
-  email?.errors?.['required']) {
-  <small>Por favor, digite seu e-mail e senha</small>
-  } @if(email?.errors?.['email']) {
-  <small>Email inválido</small>
-  } }
-  <button class="form__button">Acessar</button>
+
+  <button class="form__button flex justify-center">
+    @if(isLoading) { <app-spinner diameter="18" strokeWidth="3" /> } @else {
+    Acessar }
+  </button>
 </form>

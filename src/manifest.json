@@ -1,10 +1,20 @@
 {
   "manifest_version": 3,
-  "name": "RastreiaMais",
+  "name": "MeuPontoMais",
   "version": "1.0",
   "description": "Uma extensão para ajudar no rastreio do seu dia no trabalho de seu PontoMais",
   "action": {
-    "default_title": "RastreiaMais",
-    "default_popup": "index.html"
+    "default_title": "MeuPontoMais",
+    "default_popup": "index.html",
+    "default_icon": {
+      "48": "favicon.svg",
+      "96": "favicon.svg",
+      "128": "favicon.svg"
+    }
+  },
+  "icons": {
+    "48": "favicon.svg",
+    "96": "favicon.svg",
+    "128": "favicon.svg"
   }
 }

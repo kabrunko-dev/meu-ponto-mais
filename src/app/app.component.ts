@@ -5,14 +5,14 @@ import { RouterOutlet } from '@angular/router';
 import { AuthService, LocalStorageService } from './core/services';
 import environment from '../environments/env';
 import Auth from './shared/auth.interface';
-import SpinnerComponent from './shared/spinner.component';
+import GlobalSpinnerComponent from '@shared/global-spinner.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SpinnerComponent],
+  imports: [RouterOutlet, GlobalSpinnerComponent],
   template: `
-    <app-spinner />
+    <app-global-spinner />
     <router-outlet />
   `,
   styles: `

@@ -5,7 +5,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { Observable, interval } from 'rxjs';
 
-import SpinnerComponent from '@shared/spinner.component';
 import { isToday } from '@shared/helpers/date.helper';
 import CardComponent from '@shared/components/card.component';
 import { EmployeeResponse } from '@core/models/session.model';
@@ -31,7 +30,6 @@ import LoginService from '../login/login.service';
     NgIf,
     ProfileComponent,
     RouterLink,
-    SpinnerComponent,
     TimeTrackerComponent,
   ],
   providers: [LoginService, SessionService, WorkDaysService],

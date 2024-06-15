@@ -1,50 +1,32 @@
-import { Component } from '@angular/core';
-import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
-
-import { LoadingService } from '../core/services';
+import { Component, Input, numberAttribute } from '@angular/core';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-spinner',
   standalone: true,
-  imports: [AsyncPipe, NgIf, NgStyle],
+  imports: [NgStyle],
   template: `
-    @if (loadingService.onLoadingChange | async) {
-      <div class="overlay">
-        <div
-          class="spinner"
-          [ngStyle]="{
-            'width.px': diameter,
-            'height.px': diameter,
-            'border-width.px': strokeWidth,
-            'border-bottom-color': color,
-            'border-left-color': color,
-            'border-top-color': color
-          }"
-        ></div>
-      </div>
-    }
+    <div
+      class="spinner"
+      [ngStyle]="{
+        'width.px': diameter,
+        'height.px': diameter,
+        'border-width.px': strokeWidth,
+        'border-bottom-color': color,
+        'border-left-color': color,
+        'border-top-color': color
+      }"
+    ></div>
   `,
   styles: `
     @use 'assets/variables';
 
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      display: grid;
-      place-content: center;
-      z-index: 999;
-      background-color: variables.$green-light;
-    }
-
     .spinner {
       display: block;
       border-radius: 50%;
-      border: 4px solid white;
-      animation: spinner 0.8s linear infinite;
+      border: 4px solid variables.$white-default;
       border-right-color: transparent;
+      animation: spinner 0.8s linear infinite;
     }
 
     @keyframes spinner {
@@ -58,9 +40,7 @@ import { LoadingService } from '../core/services';
   `,
 })
 export default class SpinnerComponent {
-  diameter = 96;
-  strokeWidth = 8;
-  color = 'limegreen';
-
-  constructor(public loadingService: LoadingService) {}
+  @Input({ transform: numberAttribute }) diameter = 96;
+  @Input({ transform: numberAttribute }) strokeWidth = 8;
+  @Input() color = '#ffffff';
 }

@@ -14,6 +14,7 @@ import SpinnerComponent from '@shared/spinner.component';
 import AuthService from '@core/services/auth.service';
 import LocalStorageService from '@core/services/local-storage.service';
 import SignInResponse from '@core/models/sign-in.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -30,9 +31,8 @@ export default class LoginComponent {
   private authService = inject(AuthService);
   private localStorageService = inject(LocalStorageService);
 
-  isSubmitted = false;
   isLoading = false;
-  error = '';
+  error: any = null;
 
   credentials = this.nfb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -48,10 +48,11 @@ export default class LoginComponent {
   }
 
   onSubmit(): void {
-    this.isSubmitted = true;
+    this.error = null;
 
     if (!this.credentials.valid) {
       this.credentials.markAllAsTouched();
+      this.setFormErrorMsg();
       return;
     }
 
@@ -62,9 +63,9 @@ export default class LoginComponent {
     this.credentialsService
       .signIn(email, password)
       .pipe(
-        catchError(() => {
+        catchError((error: HttpErrorResponse) => {
+          this.error = error.error.error;
           this.isLoading = false;
-          this.isSubmitted = false;
           return EMPTY;
         })
       )
@@ -76,8 +77,17 @@ export default class LoginComponent {
         };
         this.authService.set(auth);
         this.localStorageService.setItem('session', auth);
-
         this.router.navigate(['board']);
       });
+  }
+
+  onCloseError(): void {
+    this.error = null;
+  }
+
+  private setFormErrorMsg(): void {
+    this.error = this.email?.errors?.['email']
+      ? 'Informe um e-mail válido'
+      : 'Por favor, digite seu e-mail e senha';
   }
 }
