@@ -1,17 +1,7 @@
-# PontadorMais
+![Logo do MeuPontoMais](/docs/logo.svg)
 
-## Icons
+# MeuPontoMais
 
-The chosen icons set was "Material Symbols / Material Icons" [git](https://github.com/google/material-design-icons).
+Extensão web para ajudar colaboradores que utilizam o sistema de pontos PontoMais no rastreio do seu dia de trabalho. Nela é possível ver quantas horas já foram trabalhadas, quantas faltas e qual o horário que se deve bater o ponto final.
 
-We can see all icons available [here](https://github.com/google/material-design-icons).
-
-## Ideas
-
-- Create component and service for global loading
-
-> It would be the only loading service for this state in the application
-
-- Make a simple cache for some requests
-
-> For example, `session` endpoint which data don't change or get updated often
+Além disso, lista os horários dos pontos batidos durante seu turno daquele dia.
