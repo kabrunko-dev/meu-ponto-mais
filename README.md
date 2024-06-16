@@ -1,7 +1,14 @@
-![Logo do MeuPontoMais](/docs/logo.svg)
+<p align="center"><img width="250" alt="Logo do MeuPontoMais" src="docs/logo.svg"></p>
 
-# MeuPontoMais
+<h2 align="center">MeuPontoMais</h2>
 
-Extensão web para ajudar colaboradores que utilizam o sistema de pontos PontoMais no rastreio do seu dia de trabalho. Nela é possível ver quantas horas já foram trabalhadas, quantas faltas e qual o horário que se deve bater o ponto final.
+MeuPontoMais é uma **extensão web** de **código aberto** feita para ajudar aqueles que utilizam o PontoMais no rastreio do seu dia de trabalho.
 
-Além disso, lista os horários dos pontos batidos durante seu turno daquele dia.
+> [!NOTE]
+> Em breve na Chrome Web Store
+
+## Funcionalidades
+
+- Rastreio de quantas horas já foram trabalhadas e de quantas faltam
+- Indica qual a hora que você pode sair do trabalho
+- Lista os horários dos pontos batidos durante seu turno daquele dia
