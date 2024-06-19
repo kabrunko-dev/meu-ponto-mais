@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MeuPontoMais",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Uma extensão para ajudar no rastreio do seu dia no trabalho de seu PontoMais",
   "action": {
     "default_title": "MeuPontoMais",
@@ -16,10 +16,5 @@
     "48": "favicon.ico",
     "96": "favicon.ico",
     "128": "favicon.ico"
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "addon@kabrunko-dev/meu-ponto-mais"
-    }
   }
 }
