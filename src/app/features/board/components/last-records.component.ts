@@ -33,9 +33,9 @@ import CardComponent from '@shared/components/card.component';
           </svg>
           <div class="flex align-center justify-between flex-fill">
             <p>{{ time }}</p>
-            <p class="text-gray-dark opacity-25">
-              {{ even ? 'Entrada' : 'Saída' }}
-            </p>
+            <small class="text-gray-dark opacity-25">
+              {{ even ? 'Saída' : 'Entrada' }}
+            </small>
           </div>
         </app-card>
       } @empty {
