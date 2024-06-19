@@ -11,7 +11,13 @@ import CardComponent from '../../../shared/components/card.component';
     <app-card>
       <div class="flex justify-between">
         <p><strong>Banco de horas</strong></p>
-        <p>{{ session.time_balance | clock }}</p>
+        <p
+          [class.text-green]="session.time_balance > 0"
+          [class.fw-700]="session.time_balance"
+        >
+          {{ session.time_balance > 0 ? '+' : '-'
+          }}{{ session.time_balance | clock }}
+        </p>
       </div>
     </app-card>
 

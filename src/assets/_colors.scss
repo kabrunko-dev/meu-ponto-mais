@@ -1,1 +1,27 @@
-@use './variables';
+@use './variables' as *;
+
+// TODO: Is there a way to DRY this file?
+
+.text-green {
+  color: $green-default;
+}
+
+.text-green-light {
+  color: $green-light;
+}
+
+.text-green-dark {
+  color: $green-dark;
+}
+
+.text-green {
+  color: $green-default;
+}
+
+.text-green-light {
+  color: $green-light;
+}
+
+.text-green-dark {
+  color: $green-dark;
+}

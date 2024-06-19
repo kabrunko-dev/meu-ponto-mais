@@ -7,14 +7,14 @@
     "default_title": "MeuPontoMais",
     "default_popup": "index.html",
     "default_icon": {
-      "48": "favicon.svg",
-      "96": "favicon.svg",
-      "128": "favicon.svg"
+      "48": "favicon.ico",
+      "96": "favicon.ico",
+      "128": "favicon.ico"
     }
   },
   "icons": {
-    "48": "favicon.svg",
-    "96": "favicon.svg",
-    "128": "favicon.svg"
+    "48": "favicon.ico",
+    "96": "favicon.ico",
+    "128": "favicon.ico"
   }
 }

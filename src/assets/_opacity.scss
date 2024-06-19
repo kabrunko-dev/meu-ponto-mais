@@ -1,0 +1,8 @@
+@for $i from 0 through 4 {
+  $value: $i * 0.25;
+  $label: $value * 100;
+
+  .opacity-#{$label} {
+    opacity: $value;
+  }
+}
