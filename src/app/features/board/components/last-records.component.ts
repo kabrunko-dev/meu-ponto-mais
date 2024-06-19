@@ -17,16 +17,16 @@ import CardComponent from '@shared/components/card.component';
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
             width="24px"
-            [attr.fill]="even ? '#75797c' : '#00b11d'"
+            [attr.fill]="even ? '#00b11d' : '#75797c'"
             viewBox="0 -960 960 960"
           >
             @if (even) {
               <path
-                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v80h-80v-80H200v560h560v-80h80v80q0 33-23.5 56.5T760-120H200Zm480-160-56-56 103-104H360v-80h367L624-624l56-56 200 200-200 200Z"
+                d="M160-160q-33 0-56.5-23.5T80-240v-120h80v120h640v-480H160v120H80v-120q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm300-140-56-58 83-82H80v-80h407l-83-82 56-58 180 180-180 180Z"
               />
             } @else {
               <path
-                d="M160-160q-33 0-56.5-23.5T80-240v-120h80v120h640v-480H160v120H80v-120q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm300-140-56-58 83-82H80v-80h407l-83-82 56-58 180 180-180 180Z"
+                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v80h-80v-80H200v560h560v-80h80v80q0 33-23.5 56.5T760-120H200Zm480-160-56-56 103-104H360v-80h367L624-624l56-56 200 200-200 200Z"
               />
             }
             <title>{{ even ? 'Entrada' : 'Saída' }}</title>
@@ -34,7 +34,7 @@ import CardComponent from '@shared/components/card.component';
           <div class="flex align-center justify-between flex-fill">
             <p>{{ time }}</p>
             <small class="text-gray-dark opacity-25">
-              {{ even ? 'Saída' : 'Entrada' }}
+              {{ even ? 'Entrada' : 'Saída' }}
             </small>
           </div>
         </app-card>
