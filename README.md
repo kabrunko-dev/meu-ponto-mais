@@ -4,7 +4,10 @@
 
 MeuPontoMais é uma **extensão web** de **código aberto** feita para ajudar aqueles que utilizam o PontoMais no rastreio do seu dia de trabalho.
 
-<a href="https://chromewebstore.google.com/detail/meupontomais/hkbfjidbnaeeihlclfelgkjcfbhifjin"><img src="https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png" height="56" alt="Baixe MeuPontoMais para Chromium"></a>
+## Disponibilidade
+
+- <a href="https://chromewebstore.google.com/detail/meupontomais/hkbfjidbnaeeihlclfelgkjcfbhifjin" target="_blank">Chrome Web Store</a>
+- <a href="https://addons.mozilla.org/en-US/firefox/addon/meupontomais/" target="_blank">Firefox Browser Add-ons</a>
 
 ## Funcionalidades
 
