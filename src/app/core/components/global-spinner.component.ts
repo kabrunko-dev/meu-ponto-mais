@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
 
-import { LoadingService } from '../core/services';
-import SpinnerComponent from './spinner.component';
+import { LoadingService } from '@core/services';
+import SpinnerComponent from '@shared/components/spinner.component';
 
 @Component({
   selector: 'app-global-spinner',
