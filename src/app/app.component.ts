@@ -2,10 +2,10 @@ import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { AuthService, LocalStorageService } from './core/services';
+import { AuthService, LocalStorageService } from '@core/services';
+import GlobalSpinnerComponent from '@core/components/global-spinner.component';
+import Auth from '@shared/auth.interface';
 import environment from '../environments/env';
-import Auth from './shared/auth.interface';
-import GlobalSpinnerComponent from '@shared/global-spinner.component';
 
 @Component({
   selector: 'app-root',

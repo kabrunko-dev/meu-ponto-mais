@@ -1,35 +1,32 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { Observable, interval } from 'rxjs';
 
-import { isToday } from '@shared/helpers/date.helper';
 import CardComponent from '@shared/components/card.component';
 import { EmployeeResponse } from '@core/models/session.model';
 import AuthService from '@core/services/auth.service';
 import LocalStorageService from '@core/services/local-storage.service';
-import { ClockPipe } from './pipes';
 import { SessionService, WorkDaysService } from './services';
 import ProfileComponent from './components/profile.component';
 import TimeTrackerComponent from './components/time-tracker.component';
 import LastRecordsComponent from './components/last-records.component';
 import LoginService from '../login/login.service';
+import { getTime } from '@shared/helpers';
 
 @Component({
   selector: 'app-board',
   standalone: true,
   imports: [
     AsyncPipe,
-    CardComponent,
-    ClockPipe,
     DatePipe,
-    LastRecordsComponent,
     NgFor,
     NgIf,
+    CardComponent,
+    LastRecordsComponent,
     ProfileComponent,
-    RouterLink,
     TimeTrackerComponent,
   ],
   providers: [LoginService, SessionService, WorkDaysService],
@@ -44,10 +41,18 @@ export default class BoardComponent implements OnInit {
   private workDaysService = inject(WorkDaysService);
   private router = inject(Router);
 
+  /*
+   * Signal logic v2
+   */
+  v2_today = signal(new Date()).asReadonly();
+  v2_records = signal<string[]>([]);
+
+  /*
+   * Old signal logic
+   */
   today2 = signal(new Date());
   today = new Date().toISOString().split('T')[0];
   session$: Observable<EmployeeResponse> = this.sessionService.getSession();
-  isToday = computed(() => isToday(this.today2()));
 
   // TODO: Improve signals logic
   records = signal<string[]>([]);
@@ -78,7 +83,7 @@ export default class BoardComponent implements OnInit {
     }
 
     return (
-      this.getTime(this.todayRecords()[this.todayRecords().length - 1]) +
+      getTime(this.todayRecords()[this.todayRecords().length - 1]) +
       (28800 - this.calculateWH(times))
     );
   });
@@ -132,18 +137,9 @@ export default class BoardComponent implements OnInit {
     let result = 0;
 
     for (let i = 0; i < times.length; i += 2) {
-      result += this.getTime(times[i + 1]) - this.getTime(times[i]);
+      result += getTime(times[i + 1]) - getTime(times[i]);
     }
 
     return result;
-  }
-
-  private getTime(time: string): number {
-    const [hour, minutes] = time.split(':').map(Number);
-
-    const hourInSec = hour * 3600;
-    const minutesInSec = minutes * 60;
-
-    return hourInSec + minutesInSec;
   }
 }

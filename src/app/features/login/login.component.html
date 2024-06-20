@@ -44,7 +44,7 @@
     />
   </div>
 
-  <button class="form__button flex justify-center">
+  <button class="form__button flex justify-center" [disabled]="isLoading">
     @if(isLoading) { <app-spinner diameter="18" strokeWidth="3" /> } @else {
     Acessar }
   </button>

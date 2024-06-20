@@ -6,15 +6,15 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { EMPTY, catchError } from 'rxjs';
 
-import LoginService from './login.service';
-import SpinnerComponent from '@shared/spinner.component';
 import AuthService from '@core/services/auth.service';
 import LocalStorageService from '@core/services/local-storage.service';
 import SignInResponse from '@core/models/sign-in.model';
-import { HttpErrorResponse } from '@angular/common/http';
+import SpinnerComponent from '@shared/components/spinner.component';
+import LoginService from './login.service';
 
 @Component({
   selector: 'app-login',
