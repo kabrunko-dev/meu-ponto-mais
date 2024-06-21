@@ -13,14 +13,13 @@ import { EMPTY, catchError } from 'rxjs';
 import AuthService from '@core/services/auth.service';
 import LocalStorageService from '@core/services/local-storage.service';
 import SignInResponse from '@core/models/sign-in.model';
+import { LoginService } from '@core/services';
 import SpinnerComponent from '@shared/components/spinner.component';
-import LoginService from './login.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [NgIf, ReactiveFormsModule, SpinnerComponent],
-  providers: [LoginService],
   templateUrl: 'login.component.html',
   styleUrl: 'login.component.scss',
 })

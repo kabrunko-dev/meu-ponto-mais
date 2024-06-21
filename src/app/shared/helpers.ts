@@ -1,4 +1,50 @@
-export function getTime(time: string): number {
+import { Tracker } from '@shared/tracker.interface';
+
+const DAILY_WORKING_HOURS = 28800; // 8 hours
+
+export function getWorkTracking(times: string[]): Tracker {
+  if (!times.length) {
+    return {
+      worked: 0,
+      left: 0,
+      out: 0,
+    };
+  }
+
+  if (times.length % 2 !== 0) {
+    const hourAndMinutes = new Date()
+      .toTimeString()
+      .split(':')
+      .slice(0, 2)
+      .join(':');
+    times.push(hourAndMinutes);
+  }
+
+  const worked = getWorkingHours(times);
+  const left = DAILY_WORKING_HOURS - worked;
+  const out = getTime(times.at(-1)!) + left;
+
+  return {
+    worked,
+    left,
+    out,
+  };
+}
+
+function getWorkingHours(times: string[]): number {
+  let result = 0;
+
+  for (let i = 0; i < times.length; i += 2) {
+    const clockIn = times[i + 1];
+    const clockOut = times[i];
+    const worked = getTime(clockIn) - getTime(clockOut);
+    result += worked;
+  }
+
+  return result;
+}
+
+function getTime(time: string): number {
   const [hour, minutes] = time.split(':').map(Number);
 
   const hourInSec = hour * 3600;
