@@ -1,17 +1,13 @@
-@if(session$ | async; as session) {
-<app-profile [session]="session" (signOut)="onSignOut()" />
+@if(board$ | async; as board) {
+<app-profile [session]="board.session" (signOut)="onSignOut()" />
 
 <main class="board flex flex-column gap-32">
   <div class="board__clock">
-    <h2>{{ v2_today() | date : 'HH:mm:ss' }}</h2>
-    <p>{{ v2_today() | date : 'dd/MM/yyyy, EEEE' }}</p>
+    <h2>{{ today() | date : 'HH:mm:ss' }}</h2>
+    <p>{{ today() | date : 'dd/MM/yyyy, EEEE' }}</p>
   </div>
 
-  <app-time-tracker
-    [session]="session"
-    [tracker]="{ worked: sWorkedHours(), left: sLeftingHours(), clockOut: sClockOut() }"
-  />
-
+  <app-time-tracker [session]="board.session" [tracker]="tracker()" />
   <app-last-records [records]="records()" />
 </main>
 }

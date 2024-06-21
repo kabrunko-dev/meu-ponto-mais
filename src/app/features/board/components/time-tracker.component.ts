@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 
+import CardComponent from '@shared/components/card.component';
+import { Tracker } from '@shared/tracker.interface';
 import { ClockPipe } from '../pipes';
-import CardComponent from '../../../shared/components/card.component';
 
 @Component({
   selector: 'app-time-tracker',
@@ -28,9 +29,7 @@ import CardComponent from '../../../shared/components/card.component';
       <app-card
         ><strong>Faltam</strong><br />{{ tracker.left | clock }}</app-card
       >
-      <app-card
-        ><strong>Saída</strong><br />{{ tracker.clockOut | clock }}</app-card
-      >
+      <app-card><strong>Saída</strong><br />{{ tracker.out | clock }}</app-card>
     </div>
   `,
   styles: `
@@ -44,9 +43,9 @@ import CardComponent from '../../../shared/components/card.component';
   `,
 })
 export default class TimeTrackerComponent {
-  @Input()
+  @Input({ required: true })
   session: any;
 
-  @Input()
-  tracker: any;
+  @Input({ required: true })
+  tracker!: Tracker;
 }

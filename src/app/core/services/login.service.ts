@@ -3,9 +3,11 @@ import { Injectable, inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import SignInResponse from '../../core/models/sign-in.model';
+import SignInResponse from '@core/models/sign-in.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export default class LoginService {
   private http = inject(HttpClient);
 
