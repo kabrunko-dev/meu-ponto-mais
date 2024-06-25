@@ -1,6 +1,5 @@
+import { DAILY_WORKING_HOURS } from '@core/constants';
 import { Tracker } from '@shared/tracker.interface';
-
-const DAILY_WORKING_HOURS = 28800; // 8 hours
 
 export function getWorkTracking(times: string[]): Tracker {
   if (!times.length) {
