@@ -1,6 +1,6 @@
 {
   "name": "meu-ponto-mais",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4444",
@@ -8,7 +8,8 @@
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
@@ -39,14 +40,69 @@
     "@typescript-eslint/parser": "7.2.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.0.11",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "lint-staged": "^15.2.7",
     "prettier": "3.2.5",
     "typescript": "~5.3.2",
     "typescript-eslint": "^7.5.0"
+  },
+  "lint-staged": {
+    "*.{ts,html,scss}": "eslint",
+    "*.{ts,html,css,scss}": "prettier --write"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "bracketSpacing": true
+  },
+  "eslintConfig": {
+    "root": true,
+    "ignorePatterns": ["projects/**/*"],
+    "overrides": [
+      {
+        "files": ["*.ts"],
+        "extends": [
+          "eslint:recommended",
+          "plugin:@typescript-eslint/recommended",
+          "plugin:@angular-eslint/recommended",
+          "plugin:@angular-eslint/template/process-inline-templates"
+        ],
+        "rules": {
+          "@angular-eslint/directive-selector": [
+            "error",
+            {
+              "type": "attribute",
+              "prefix": "app",
+              "style": "camelCase"
+            }
+          ],
+          "@angular-eslint/component-selector": [
+            "error",
+            {
+              "type": "element",
+              "prefix": "app",
+              "style": "kebab-case"
+            }
+          ]
+        }
+      },
+      {
+        "files": ["*.html"],
+        "extends": [
+          "plugin:@angular-eslint/template/recommended",
+          "plugin:@angular-eslint/template/accessibility"
+        ]
+      }
+    ]
   }
 }

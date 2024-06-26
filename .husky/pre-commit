@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+# To more commands see: https://github.com/lint-staged/lint-staged?tab=readme-ov-file#command-line-flags
+npx lint-staged --verbose
