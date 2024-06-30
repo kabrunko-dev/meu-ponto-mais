@@ -1,6 +1,6 @@
 import MetaResponse from './meta.model';
 
-export interface WorkDaysResponse {
+export interface CurrentWorkDaysResponse {
   work_days: WorkDayResponse[];
   meta: MetaResponse;
 }

@@ -1,5 +1,5 @@
 import { DAILY_WORKING_HOURS } from '@core/constants';
-import { Tracker } from '@shared/tracker.interface';
+import { Tracker } from '@shared/interfaces';
 
 export function getWorkTracking(times: string[]): Tracker {
   if (!times.length) {
@@ -11,12 +11,8 @@ export function getWorkTracking(times: string[]): Tracker {
   }
 
   if (times.length % 2 !== 0) {
-    const hourAndMinutes = new Date()
-      .toTimeString()
-      .split(':')
-      .slice(0, 2)
-      .join(':');
-    times.push(hourAndMinutes);
+    const newTime = new Date().toTimeString().substring(0, 5);
+    times.push(newTime);
   }
 
   const worked = getWorkingHours(times);

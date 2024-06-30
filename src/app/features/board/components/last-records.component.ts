@@ -1,43 +1,80 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ReversePipe } from '../pipes';
 import CardComponent from '@shared/components/card.component';
+import { TimeCard } from '@shared/interfaces';
 
 @Component({
   selector: 'app-last-records',
   standalone: true,
   imports: [CardComponent, NgFor, NgIf, ReversePipe],
   template: `
-    <h4>Últimos registros</h4>
+    <div class="header flex align-center justify-between">
+      <h4>Registros do dia</h4>
+      <button title="Adicionar ponto falso" (click)="add.emit()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          width="24px"
+          fill="#123442"
+          viewBox="0 -960 960 960"
+        >
+          <path
+            d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"
+          />
+        </svg>
+      </button>
+    </div>
     <div class="flex flex-column gap-8">
-      @for (time of records | reverse; track time; let odd = $odd) {
-        <app-card class="flex align-center gap-8">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            width="24px"
-            [attr.fill]="odd ? '#00b11d' : '#75797c'"
-            viewBox="0 -960 960 960"
+      @for (record of records | reverse; track record.time; let idx = $index) {
+        <div class="flex align-center gap-8">
+          <app-card
+            class="flex align-center gap-8 flex-fill"
+            [class.fake]="record.fake"
           >
-            @if (odd) {
-              <path
-                d="M160-160q-33 0-56.5-23.5T80-240v-120h80v120h640v-480H160v120H80v-120q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm300-140-56-58 83-82H80v-80h407l-83-82 56-58 180 180-180 180Z"
-              />
-            } @else {
-              <path
-                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v80h-80v-80H200v560h560v-80h80v80q0 33-23.5 56.5T760-120H200Zm480-160-56-56 103-104H360v-80h367L624-624l56-56 200 200-200 200Z"
-              />
-            }
-            <title>{{ odd ? 'Entrada' : 'Saída' }}</title>
-          </svg>
-          <div class="flex align-center justify-between flex-fill">
-            <p>{{ time }}</p>
-            <small class="text-gray-dark opacity-25">
-              {{ odd ? 'Entrada' : 'Saída' }}
-            </small>
-          </div>
-        </app-card>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              width="24px"
+              [attr.fill]="record.type === 'out' ? '#75797c' : '#00b11d'"
+              viewBox="0 -960 960 960"
+            >
+              @if (record.type === 'out') {
+                <path
+                  d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v80h-80v-80H200v560h560v-80h80v80q0 33-23.5 56.5T760-120H200Zm480-160-56-56 103-104H360v-80h367L624-624l56-56 200 200-200 200Z"
+                />
+              } @else {
+                <path
+                  d="M160-160q-33 0-56.5-23.5T80-240v-120h80v120h640v-480H160v120H80v-120q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm300-140-56-58 83-82H80v-80h407l-83-82 56-58 180 180-180 180Z"
+                />
+              }
+              <title>{{ record.type === 'out' ? 'Saída' : 'Entrada' }}</title>
+            </svg>
+            <div class="flex align-center justify-between flex-fill">
+              <p>{{ record.time }}</p>
+              <small class="text-gray-dark opacity-25">
+                {{ record.type === 'out' ? 'Saída' : 'Entrada' }}
+              </small>
+            </div>
+          </app-card>
+          @if (record.fake) {
+            <button (click)="delete.emit(idx)">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="16px"
+                width="16px"
+                fill="#ca3325"
+                viewBox="0 -960 960 960"
+              >
+                <path
+                  d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+                />
+                <title>Excluir ponto falso</title>
+              </svg>
+            </button>
+          }
+        </div>
       } @empty {
         <div
           class="empty-state flex align-center gap-4 justify-center opacity-75"
@@ -59,16 +96,24 @@ import CardComponent from '@shared/components/card.component';
     </div>
   `,
   styles: `
-    .empty-state {
-      padding: 16px;
+    @use 'assets/variables';
+
+    .header {
+      margin-bottom: 8px;
     }
 
-    h4 {
-      margin-bottom: 4px;
+    .empty-state {
+      padding: 16px;
     }
   `,
 })
 export default class LastRecordsComponent {
   @Input()
-  records: string[] = [];
+  records: TimeCard[] = [];
+
+  @Output()
+  add = new EventEmitter<never>();
+
+  @Output()
+  delete = new EventEmitter<number>();
 }

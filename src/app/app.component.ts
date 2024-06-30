@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 
 import { AuthService, LocalStorageService } from '@core/services';
 import GlobalSpinnerComponent from '@core/components/global-spinner.component';
-import Auth from '@shared/auth.interface';
+import { Auth } from '@shared/interfaces';
 import environment from '../environments/env';
 
 @Component({

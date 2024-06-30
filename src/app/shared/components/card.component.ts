@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   standalone: true,
   template: `<ng-content />`,
   styles: `
-    @use 'assets/shadows' as *;
+    @use 'assets/shadow' as *;
     @use 'assets/variables';
 
     :host {

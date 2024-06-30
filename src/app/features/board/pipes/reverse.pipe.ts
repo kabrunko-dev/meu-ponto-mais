@@ -1,15 +1,13 @@
-import {Pipe, PipeTransform} from "@angular/core";
+import { Pipe, PipeTransform } from '@angular/core';
+
+import { TimeCard } from '@shared/interfaces';
 
 @Pipe({
   name: 'reverse',
-  standalone: true
+  standalone: true,
 })
 export default class ReversePipe implements PipeTransform {
-  transform(value: any): any {
-    if(Array.isArray(value)) {
-      return value.reverse();
-    }
-
-    return value;
+  transform(value: TimeCard[]): TimeCard[] {
+    return value.reverse();
   }
 }
