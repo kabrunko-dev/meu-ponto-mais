@@ -1,13 +1,30 @@
-@if(board$ | async; as board) {
-<app-profile [session]="board.session" (signOut)="onSignOut()" />
+@if (board(); as board) {
+  <app-profile [session]="board.session" (signOut)="onSignOut()" />
 
-<main class="board flex flex-column gap-32">
-  <div class="board__clock">
-    <h2>{{ today() | date : 'HH:mm:ss' }}</h2>
-    <p>{{ today() | date : 'dd/MM/yyyy, EEEE' }}</p>
-  </div>
+  <main class="board flex flex-column gap-32">
+    <div class="board__clock text-center">
+      <p class="fs-36 fw-700">{{ today() | date: 'HH:mm' }}</p>
+      <p>{{ today() | date: 'dd/MM/yyyy, EEEE' }}</p>
+    </div>
 
-  <app-time-tracker [session]="board.session" [tracker]="tracker()" />
-  <app-last-records [records]="records()" />
-</main>
+    <app-time-tracker [session]="board.session" [tracker]="tracker()" />
+    <app-last-records
+      [records]="records()"
+      (add)="dialog.showModal()"
+      (delete)="onDeleteRecord($event)"
+    />
+  </main>
+
+  <dialog class="shadow" #dialog>
+    <h5>Adicionar ponto falso</h5>
+    <form
+      method="dialog"
+      class="flex flex-column gap-4"
+      (ngSubmit)="onSubmit(input)"
+    >
+      <label for="new-time">Horário</label>
+      <input id="new-time" type="time" #input />
+      <button [disabled]="!input.value">Adicionar</button>
+    </form>
+  </dialog>
 }

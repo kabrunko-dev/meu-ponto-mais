@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
 
 import CardComponent from '@shared/components/card.component';
-import { Tracker } from '@shared/tracker.interface';
-import { ClockPipe } from '../pipes';
+import { Tracker } from '@shared/interfaces';
 import { DAILY_WORKING_HOURS } from '@core/constants';
+import { ClockPipe } from '../pipes';
+import { EmployeeResponse } from '@core/models/session.model';
 
 @Component({
   selector: 'app-time-tracker',
@@ -13,32 +14,40 @@ import { DAILY_WORKING_HOURS } from '@core/constants';
   template: `
     <app-card>
       <div class="flex justify-between pos-relative">
-        <p><strong>Banco de horas</strong></p>
+        <p>Banco de horas</p>
         <p
+          [class.text-red]="session.time_balance < 0"
           [class.text-green]="session.time_balance > 0"
-          [class.fw-700]="session.time_balance"
+          [class.fw-700]="session.time_balance > 0"
         >
           {{ session.time_balance | clock }}
         </p>
-        @if (extraHours) {
-          <span class="extra-hours pos-absolute fs-12 fw-700"
-            >+{{ extraHours | clock }}</span
-          >
+        @if (extraHours > 0) {
+          <span class="extra-hours pos-absolute fs-12 fw-700">
+            +{{ extraHours | clock }}
+          </span>
         }
       </div>
     </app-card>
 
     <div class="flex gap-8 working-hours">
-      <app-card
-        ><strong>Trabalhado</strong><br />{{ tracker.worked | clock }}</app-card
-      >
-      <app-card
-        ><strong>Faltam</strong><br />{{ tracker.left | clock }}</app-card
-      >
-      <app-card><strong>Saída</strong><br />{{ tracker.out | clock }}</app-card>
+      <app-card>
+        <h4>Trabalhado</h4>
+        <p>{{ tracker.worked | clock }}</p>
+      </app-card>
+      <app-card>
+        <h4>Faltam</h4>
+        <p>{{ tracker.left | clock }}</p>
+      </app-card>
+      <app-card>
+        <h4>Saída</h4>
+        <p>{{ tracker.out | clock }}</p>
+      </app-card>
     </div>
   `,
   styles: `
+    @use 'assets/variables';
+
     .working-hours {
       margin-top: 8px;
 
@@ -48,18 +57,18 @@ import { DAILY_WORKING_HOURS } from '@core/constants';
     }
 
     .extra-hours {
-      top: -100%;
+      top: -24px;
       right: 0;
-      background-color: #00b11d;
       padding: 2px 8px;
       border-radius: 4px;
-      color: #ffffff;
+      background-color: variables.$green-default;
+      color: variables.$white-default;
     }
   `,
 })
 export default class TimeTrackerComponent {
   @Input({ required: true })
-  session: any;
+  session!: EmployeeResponse;
 
   @Input({ required: true })
   tracker!: Tracker;

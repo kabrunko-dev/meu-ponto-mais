@@ -1,26 +1,25 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import { Component, computed, inject, signal } from '@angular/core';
+import { DatePipe, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
-import { Observable, forkJoin, interval, tap } from 'rxjs';
+import { forkJoin, interval, tap } from 'rxjs';
 
 import { AuthService, LocalStorageService, LoginService } from '@core/services';
-import { EmployeeResponse } from '@core/models/session.model';
-import { WorkDayResponse } from '@core/models/work-days.model';
 import { getWorkTracking } from '@shared/helpers';
-import { Tracker } from '@shared/tracker.interface';
+import { Tracker, TimeCard } from '@shared/interfaces';
 import { SessionService, WorkDaysService } from './services';
 import ProfileComponent from './components/profile.component';
 import TimeTrackerComponent from './components/time-tracker.component';
 import LastRecordsComponent from './components/last-records.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-board',
   standalone: true,
   imports: [
-    AsyncPipe,
     DatePipe,
+    FormsModule,
     NgIf,
     LastRecordsComponent,
     ProfileComponent,
@@ -28,9 +27,36 @@ import LastRecordsComponent from './components/last-records.component';
   ],
   providers: [SessionService],
   templateUrl: './board.component.html',
-  styleUrl: './board.component.scss',
+  styles: `
+    @use 'assets/variables';
+
+    .board {
+      padding: 16px;
+      padding-bottom: 24px;
+
+      &__clock {
+        margin-top: 16px;
+      }
+    }
+
+    dialog {
+      height: 150px;
+      width: 180px;
+      position: absolute;
+      top: 172px;
+      left: 70px;
+      border-radius: 4px;
+      border: 0;
+      padding: 8px;
+    }
+
+    ::backdrop {
+      background-color: variables.$black-default;
+      opacity: 0.75;
+    }
+  `,
 })
-export default class BoardComponent implements OnInit {
+export default class BoardComponent {
   private localStorageService = inject(LocalStorageService);
   private loginService = inject(LoginService);
   private authService = inject(AuthService);
@@ -39,30 +65,24 @@ export default class BoardComponent implements OnInit {
   private router = inject(Router);
 
   today = signal(new Date());
-  records = signal<string[]>([]);
-  tracker = computed<Tracker>(() => getWorkTracking([...this.records()]));
-
-  board$!: Observable<{ session: EmployeeResponse }>;
+  records = signal<TimeCard[]>([]);
+  tracker = computed<Tracker>(() => {
+    const times = this.records().map((record) => record.time);
+    return getWorkTracking([...times]);
+  });
+  board = toSignal(
+    forkJoin({
+      session: this.sessionService.getSession(),
+      _: this.workDaysService
+        .getWorkDays(this.today().toISOString().split('T')[0])
+        .pipe(tap((response) => this.records.set(response))),
+    })
+  );
 
   constructor() {
     interval(1000)
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.today.set(new Date()));
-  }
-
-  ngOnInit(): void {
-    const now = this.today().toISOString().split('T')[0];
-
-    this.board$ = forkJoin({
-      session: this.sessionService.getSession(),
-      times: this.workDaysService
-        .getWorkDays(now, now)
-        .pipe(
-          tap((times: WorkDayResponse) =>
-            this.records.set(times.time_cards.map((tc) => tc.time))
-          )
-        ),
-    });
   }
 
   onSignOut(): void {
@@ -71,5 +91,23 @@ export default class BoardComponent implements OnInit {
       this.localStorageService.removeItem('session');
       this.router.navigate(['login']);
     });
+  }
+
+  onSubmit(input: HTMLInputElement): void {
+    const time = input.value;
+
+    if (!time) return;
+
+    // TODO: Some weird bug is happening
+    const type = this.records().length % 2 ? 'out' : 'in';
+    const newCard: TimeCard = { time, type, fake: true };
+    this.records.update((values) => [...values, newCard]);
+
+    input.value = '';
+  }
+
+  onDeleteRecord(index: number): void {
+    const isFake = this.records()[index].fake;
+    this.records.update((values) => (isFake ? values.splice(index) : values));
   }
 }

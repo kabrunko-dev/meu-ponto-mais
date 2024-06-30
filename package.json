@@ -67,7 +67,7 @@
   },
   "eslintConfig": {
     "root": true,
-    "ignorePatterns": ["projects/**/*"],
+    "ignorePatterns": ["**/*.scss"],
     "overrides": [
       {
         "files": ["*.ts"],

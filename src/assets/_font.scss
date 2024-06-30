@@ -9,7 +9,7 @@ $weights: 400, 700;
 
 $size-offset: 4;
 
-@for $i from 1 to 4 {
+@for $i from 1 to 10 {
   $font-size: $i * $size-offset;
 
   .fs-#{$font-size} {

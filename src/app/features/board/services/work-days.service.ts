@@ -3,10 +3,8 @@ import { Injectable, inject } from '@angular/core';
 
 import { Observable, map } from 'rxjs';
 
-import {
-  WorkDayResponse,
-  WorkDaysResponse,
-} from '@core/models/work-days.model';
+import { CurrentWorkDaysResponse } from '@core/models/work-days.model';
+import { TimeCard } from '@shared/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -14,30 +12,24 @@ import {
 export default class WorkDaysService {
   private http = inject(HttpClient);
 
-  getWorkDays(start: string, end: string): Observable<WorkDayResponse> {
-    return this.http
-      .get<WorkDaysResponse>('/time_cards/work_days/current', {
-        params: {
-          start_date: start,
-          end_date: end,
-          sort_direction: 'desc',
-          attributes: 'time_cards,date',
-        },
-      })
-      .pipe(map((response: WorkDaysResponse) => response.work_days[0]));
-  }
+  getWorkDays(start_date: string, end_date?: string): Observable<TimeCard[]> {
+    if (!end_date) end_date = start_date;
 
-  // TODO: Use for "/meu-ponto" route/feature
-  getTimeCardControl(start: string, end: string): Observable<any> {
     return this.http
-      .get<any>('/time_card_control/current/work_days', {
+      .get<CurrentWorkDaysResponse>('/time_cards/work_days/current', {
         params: {
-          start_date: start,
-          end_date: end,
-          sort_direction: 'desc',
-          sort_property: 'date',
+          start_date,
+          end_date,
+          attributes: 'time_cards',
         },
       })
-      .pipe(map((value) => value.work_days));
+      .pipe(
+        map(({ work_days }) =>
+          work_days[0].time_cards.map(({ time }, idx) => ({
+            time,
+            type: idx % 2 ? 'out' : 'in',
+          }))
+        )
+      );
   }
 }
