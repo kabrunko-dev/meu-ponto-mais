@@ -14,3 +14,4 @@ MeuPontoMais é uma **extensão web** de **código aberto** feita para ajudar aq
 - Rastreio de quantas horas já foram trabalhadas e de quantas faltam
 - Indica qual a hora que você pode sair do trabalho
 - Lista os horários dos pontos batidos durante seu turno daquele dia
+- Mostra quantas horas extras vocês está fazendo no dia
