@@ -92,22 +92,4 @@ export default class BoardComponent {
       this.router.navigate(['login']);
     });
   }
-
-  onSubmit(input: HTMLInputElement): void {
-    const time = input.value;
-
-    if (!time) return;
-
-    // TODO: Some weird bug is happening
-    const type = this.records().length % 2 ? 'out' : 'in';
-    const newCard: TimeCard = { time, type, fake: true };
-    this.records.update((values) => [...values, newCard]);
-
-    input.value = '';
-  }
-
-  onDeleteRecord(index: number): void {
-    const isFake = this.records()[index].fake;
-    this.records.update((values) => (isFake ? values.splice(index) : values));
-  }
 }

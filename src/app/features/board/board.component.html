@@ -8,23 +8,6 @@
     </div>
 
     <app-time-tracker [session]="board.session" [tracker]="tracker()" />
-    <app-last-records
-      [records]="records()"
-      (add)="dialog.showModal()"
-      (delete)="onDeleteRecord($event)"
-    />
+    <app-last-records [records]="records()" />
   </main>
-
-  <dialog class="shadow" #dialog>
-    <h5>Adicionar ponto falso</h5>
-    <form
-      method="dialog"
-      class="flex flex-column gap-4"
-      (ngSubmit)="onSubmit(input)"
-    >
-      <label for="new-time">Horário</label>
-      <input id="new-time" type="time" #input />
-      <button [disabled]="!input.value">Adicionar</button>
-    </form>
-  </dialog>
 }
