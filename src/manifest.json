@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MeuPontoMais",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Uma extensão para ajudar no rastreio do seu dia no trabalho de seu PontoMais",
   "action": {
     "default_title": "MeuPontoMais",
