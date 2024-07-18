@@ -8,7 +8,7 @@ import { EmployeeResponse } from '@core/models/session.model';
     <div class="flex gap-8 align-center">
       <img
         [alt]="'Foto de ' + name"
-        [src]="'https://' + session.picture.medium_url"
+        [src]="profileImg"
         height="36"
         width="36"
       />
@@ -69,5 +69,10 @@ export default class ProfileComponent {
     const last = names.at(-1);
 
     return first + ' ' + last;
+  }
+
+  get profileImg(): string {
+    const imgUrl = this.session.picture.medium_url;
+    return URL.canParse(imgUrl) ? imgUrl : `https://${imgUrl}`;
   }
 }
